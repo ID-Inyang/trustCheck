@@ -6,15 +6,49 @@ const displayResults = document.getElementById("results");
 
 async function searchCompany() {
 
-  const query = document.getElementById("searchInput").value;
+  const container = document.getElementById("results");
 
-  const url = `https://api.opencorporates.com/v0.4/companies/search?q=${query}`;
+  container.innerHTML = "Loading...";
 
-  const response = await fetch(url);
+  const data = {
+    results: [
+      {
+        id: 1,
+        name: "Flutterwave",
+        trustScore: 92,
+        verified: true,
+        recommendations: 34,
+        industry: "Fintech"
+      },
+      {
+        id: 2,
+        name: "Paystack",
+        trustScore: 95,
+        verified: true,
+        recommendations: 51,
+        industry: "Fintech"
+      }
+    ]
+  };
 
-  const data = await response.json();
+  container.innerHTML = "";
 
-  displayResults.textContent = data;
+  data.results.forEach(company => {
 
-  console.log(data);
+    const badge = company.verified ? "✅ Verified" : "❌ Unverified";
+
+    const card = document.createElement("div");
+
+    card.innerHTML = `
+      <h3>${company.name}</h3>
+      <p>${badge}</p>
+      <p>Trust Score: ${company.trustScore}</p>
+      <p>Industry: ${company.industry}</p>
+      <p>Recommendations: ${company.recommendations}</p>
+    `;
+
+    container.appendChild(card);
+
+  });
+
 }
